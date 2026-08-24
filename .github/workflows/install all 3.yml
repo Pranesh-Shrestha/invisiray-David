@@ -31,16 +31,30 @@ jobs:
     container:
       image: node:20
     steps:
+          # ============= InvisiRisk Setup =============
+      - name: Setup PSE
+        uses: invisirisk/pse-action@latest
+        with:
+          #api_url: "https://app.stage.invisirisk.com"
+          app_token: ${{ secrets.IR_API_KEY }}
+      # ============= InvisiRisk Setup End =============
       - uses: actions/checkout@v4
       - run: npm install --no-audit --no-fund
 
       
-  build-go:
+  build-pypi:
     if: ${{ inputs.SKIP_PYPI != true }}
     runs-on: ubuntu-latest
     container:
       image: python:3.12
-    steps:    
+    steps:
+          # ============= InvisiRisk Setup =============
+      - name: Setup PSE
+        uses: invisirisk/pse-action@latest
+        with:
+          #api_url: "https://app.stage.invisirisk.com"
+          app_token: ${{ secrets.IR_API_KEY }}
+      # ============= InvisiRisk Setup End =============
       - uses: actions/checkout@v4
       - run: pip install -r requirements.txt
 
@@ -49,6 +63,13 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ruby:3.3
-    steps: 
+    steps:
+      # ============= InvisiRisk Setup =============
+      - name: Setup PSE
+        uses: invisirisk/pse-action@latest
+        with:
+          #api_url: "https://app.stage.invisirisk.com"
+          app_token: ${{ secrets.IR_API_KEY }}
+      # ============= InvisiRisk Setup End =============
       - uses: actions/checkout@v4
       - run: bundle install
