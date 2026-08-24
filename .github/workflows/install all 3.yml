@@ -1,0 +1,54 @@
+name: "3 ecosystem install"
+
+on:
+  workflow_dispatch:
+    inputs:
+      SKIP_JAVASCRIPT:
+        description: "Skip JavaScript"
+        type: boolean
+        default: false
+  
+      SKIP_PYPI:
+        description: "Skip PyPi"
+        type: boolean
+        default: false
+
+      SKIP_RUBY:
+        description: "Skip Ruby"
+        type: boolean
+        default: false
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+  id-token: write
+
+jobs:
+  build-javascript:
+    if: ${{ inputs.SKIP_JAVASCRIPT != true }}
+    runs-on: ubuntu-latest
+    container:
+      image: node:20
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install --no-audit --no-fund
+
+      
+  build-go:
+    if: ${{ inputs.SKIP_PYPI != true }}
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.12
+    steps:    
+      - uses: actions/checkout@v4
+      - run: pip install -r requirements.txt
+
+  build-ruby:
+    if: ${{ inputs.SKIP_RUBY != true }}
+    runs-on: ubuntu-latest
+    container:
+      image: ruby:3.3
+    steps: 
+      - uses: actions/checkout@v4
+      - run: bundle install
